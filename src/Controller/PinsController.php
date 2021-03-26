@@ -72,4 +72,13 @@ return $this->render("pins/create.html.twig",["form"=>$form->createView()]);
                 }
                 return $this->render("pins/edit.html.twig", ["pin"=>$pin,"form"=>$form->createView()]);
             }
+               /**
+      *@Route("/pins/{id<[0-9]+>}/delete",name="app_pins_delete",methods="DELETE") 
+      
+      */
+      public function delete (Pin $pin,EntityManagerInterface $em):Response{
+$em->remove($pin);
+$em->flush();
+return $this->redirectToRoute("app_home");
+      }
 }
