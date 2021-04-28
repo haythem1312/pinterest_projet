@@ -6,6 +6,7 @@ use App\Entity\Pin;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Vich\UploaderBundle\Form\Type\VichImageType;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PinType extends AbstractType
@@ -20,6 +21,8 @@ class PinType extends AbstractType
             'delete_label' => 'Delete?',
             'download_label' => 'Download',
             'download_uri' => false,
+            'imagine_pattern'=> 'squared_thumbnail_small'
+        
            ])
             ->add('title')
             ->add('description')
