@@ -22,3 +22,15 @@ body {
         background-color: blue;
     }
 }
+
+.vch-image {
+    .form-check {
+        @extend .mt-3;
+    }
+    .img {
+        @extend .mb-3;
+        @extend .rounded;
+        @extend .shadow;
+        @extend .img-thumbnail;
+    }
+}
