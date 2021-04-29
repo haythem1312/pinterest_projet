@@ -2,10 +2,10 @@
 <div class="row">
     <div class="col-md-6 mx-auto">
         <article class="pin bg-white rounded shadow">
-            <div class="mw100 overflow-hidden">
+            <div class="mw100  rounded-top overflow-hidden">
                 <a href="{{path('app_pins_show',{id:pin.id})}}">
                     <img src="{{(pin.imageName ? vich_uploader_asset(pin) : asset('build/images/heni.6e1e1f41.jfif')) 
-                |imagine_filter('squared_thumbnail_medium') }}" alt="{{ pin.title }}" class="w-100 rounded-top" />
+                |imagine_filter('squared_thumbnail_medium') }}" alt="{{ pin.title }}" class="w-100" />
 
                 </a>
             </div>
