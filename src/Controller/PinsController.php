@@ -41,8 +41,7 @@ $pin=new Pin;
 
         $form->handleRequest($request);
         if($form->isSubmitted()&& $form->isValid()){
-            $janeDoe= $userRepo->findOneBy(['email'=>'janedoe@example.com']);
-            $pin->setUser($janeDoe);
+           $pin->setUser($this->getUser());
             $em->persist($pin);
             $em->flush();
             $this->addFlash("success","Pin successfully created!");
@@ -89,6 +88,7 @@ return $this->render("pins/create.html.twig",["form"=>$form->createView()]);
     $em->flush();
     $this->addFlash("info","Pin successfully deleted!");
 //}
-return $this->redirectToRoute("app_home");
+return  $this->redirectToRoute("app_home");
+
       }
 }
