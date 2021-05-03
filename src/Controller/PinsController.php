@@ -82,7 +82,7 @@ return $this->render("pins/create.html.twig",["form"=>$form->createView()]);
       
       */
       public function delete (Request $request ,Pin $pin,EntityManagerInterface $em):Response{
-//if ($this->isCsrfTokenValid("pin_deletion_".$pin->getId(),$request->request->get("csrf_token"))) {
+//if ($this->isCsrfTokenValid('pin_deletion_'.$pin->getId(),$request->request->get("csrf_token"))) {
     
     $em->remove($pin);
     $em->flush();
