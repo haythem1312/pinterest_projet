@@ -44,7 +44,7 @@ class ResetPasswordController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->processSendingPasswordResetEmail(
-                $form->get('email')->getData(),
+                $form['email']->getData(),
                 $mailer
             );
         }
@@ -156,7 +156,7 @@ class ResetPasswordController extends AbstractController
             return $this->redirectToRoute('app_check_email');
         }
 
-        $email = (new TemplatedEmail())
+        $email = (new TemplatedEmail)
             ->from(new Address(
                 $this->getParameter('app.mail_from_adress'),
                 $this->getParameter('app.mail_from_name')
