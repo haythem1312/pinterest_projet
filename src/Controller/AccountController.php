@@ -8,10 +8,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 /**
  * @Route("/account")
+ *  @IsGranted("ROLE_USER")
  */
 
 
@@ -22,6 +24,7 @@ class AccountController extends AbstractController
      */
     public function sohw(): Response
     {
+    
         return $this->render('account/show.html.twig');
 
     }
@@ -47,8 +50,9 @@ return $this->render('account/edit.html.twig' , ['form'=>$form->createView()]);
      * @Route("/change-password", name="app_account_change_password",methods={"GET","POST"})
      */
     public function changePassword(Request $request,EntityManagerInterface $em,UserPasswordEncoderInterface $passwordEncoder): Response
-    {
-        $user=$this->getUser();
+    { 
+        
+      $user=$this->getUser();
     $form=$this->createForm(ChangePasswordFormType::class,null,['current_password_is_required'=>true]);
     $form->handleRequest($request);
     if ($form->isSubmitted()&& $form->isValid()) {
