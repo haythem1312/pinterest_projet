@@ -4,25 +4,28 @@ namespace App\Controller;
 
 use App\Entity\Pin;
 use App\Form\PinType;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\Entity;
 use App\Repository\PinRepository;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\Entity;
 use Symfony\Flex\Response as FlexResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Asset\Context\RequestStackContext;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PinsController extends AbstractController
 {
     /**
      * @Route("/", name="app_home",methods="GET")
-  
+     
      */
+    
     public function index(PinRepository $pinRepository): Response
     {
         $pins=$pinRepository->findBy([],["createdAt"=>"DESC"]);
@@ -31,10 +34,14 @@ class PinsController extends AbstractController
     }
     /**
      * @Route("/pins/create", name="app_pins_create",methods="GET|POST")
+     *   *@IsGranted("PIN_CREATE")
+  
   
      */
     public function create(Request $request,EntityManagerInterface $em ,UserRepository $userRepo):Response
     {
+
+       
 $pin=new Pin;
         $form=$this->createForm(PinType::class ,$pin);
        
@@ -57,16 +64,25 @@ return $this->render("pins/create.html.twig",["form"=>$form->createView()]);
       */
       public function show(Pin $pin):Response{
  
-        
-     
-        return $this->render("pins/show.html.twig",compact("pin"));
-
-            }
-             /**
+        return $this->render("pins/show.html.twig",compact("pin"));   
+     }
+ 
+ 
+ 
+ 
+     /**
       *@Route("/pins/{id<[0-9]+>}/edit",name="app_pins_edit",methods="GET|PUT") 
+      *@IsGranted("PIN_MANAGE",subject="pin")
       
       */
             public function edit (Pin $pin,EntityManagerInterface $em,Request $request):Response{
+
+             
+                    
+             
+
+
+
                 $form=$this->createForm(PinType::class,$pin,["method"=>"PUT"]);
                 $form->handleRequest($request);
                 if ($form->isSubmitted()&& $form->isValid()) {
@@ -78,12 +94,15 @@ return $this->render("pins/create.html.twig",["form"=>$form->createView()]);
                 return $this->render("pins/edit.html.twig", ["pin"=>$pin,"form"=>$form->createView()]);
             }
                /**
-      *@Route("/pins/{id<[0-9]+>}/delete",name="app_pins_delete",methods="DELETE") 
+      *@Route("/pins/{id<[0-9]+>}/delete",name="app_pins_delete",methods="DELETE")
+     
       
       */
       public function delete (Request $request ,Pin $pin,EntityManagerInterface $em):Response{
 //if ($this->isCsrfTokenValid('pin_deletion_'.$pin->getId(),$request->request->get("csrf_token"))) {
-    
+   
+    $this->denyAccessUnlessGranted('PIN_MANAGE',$pin);
+
     $em->remove($pin);
     $em->flush();
     $this->addFlash("info","Pin successfully deleted!");
